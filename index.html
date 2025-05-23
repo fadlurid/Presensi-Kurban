@@ -1,0 +1,1335 @@
+
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presensi Kurban LAZIS Sabililah</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f9fafb;
+        }
+        .header {
+            background-color: #15803d;
+            color: white;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .btn-primary {
+            background-color: #15803d;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: #166534;
+        }
+        .btn-secondary {
+            background-color: #e5e7eb;
+            color: #374151;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        .btn-secondary:hover {
+            background-color: #d1d5db;
+        }
+        .btn-danger {
+            background-color: #ef4444;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        .btn-danger:hover {
+            background-color: #dc2626;
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .status-hadir {
+            background-color: #d1fae5;
+            color: #065f46;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        .status-terlambat {
+            background-color: #fef3c7;
+            color: #92400e;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        .status-pulang {
+            background-color: #dbeafe;
+            color: #1e40af;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        .notification {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            background-color: #34d399;
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            z-index: 50;
+            opacity: 0;
+            transform: translateY(-1rem);
+            transition: all 0.3s;
+        }
+        .notification.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .notification.error {
+            background-color: #ef4444;
+        }
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid white;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .tab-button {
+            padding: 0.75rem 1.5rem;
+            font-weight: 500;
+            transition: all 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+        .tab-button.active {
+            border-bottom-color: #15803d;
+            color: #15803d;
+        }
+        .barcode-scanner {
+            position: relative;
+            padding: 1rem;
+            border: 2px dashed #d1d5db;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .barcode-scanner:focus-within {
+            border-color: #15803d;
+        }
+        .time-setting {
+            display: flex;
+            align-items: center;
+            background-color: #f3f4f6;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f9fafb;
+            padding: 1rem;
+        }
+        .login-card {
+            width: 100%;
+            max-width: 400px;
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 2rem;
+        }
+        .login-logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            background-color: #15803d;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .search-input {
+            width: 100%;
+            padding: 0.5rem 0.75rem 0.5rem 2.5rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+        }
+        .search-input:focus {
+            outline: none;
+            border-color: #15803d;
+            box-shadow: 0 0 0 3px rgba(21, 128, 61, 0.2);
+        }
+        .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="login-screen">
+        <div class="login-container">
+            <div class="login-card">
+                <div class="login-logo">
+                    <span>LS</span>
+                </div>
+                <h2 class="text-2xl font-bold text-center mb-6">Presensi Kurban LAZIS Sabililah</h2>
+                <form id="login-form" class="space-y-4">
+                    <div>
+                        <label for="password" class="block text-gray-700 font-medium mb-2">Password</label>
+                        <input type="password" id="password" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" required>
+                    </div>
+                    <div id="password-error" class="text-red-500 text-sm hidden">Password salah. Silakan coba lagi.</div>
+                    <button type="submit" class="w-full btn-primary">Masuk</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="main-app" class="hidden">
+        <div id="notification" class="notification">
+            <span id="notification-message"></span>
+        </div>
+
+        <div id="loading-overlay" class="loading-overlay hidden">
+            <div class="spinner"></div>
+        </div>
+
+        <div class="container mx-auto px-4 py-6">
+            <div class="header flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center mb-4 md:mb-0">
+                    <div class="w-16 h-16 mr-4 overflow-hidden rounded-lg bg-white p-1">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iIzE1ODAzZCIvPjx0ZXh0IHg9IjUwIiB5PSI1MCIgZm9udC1zaXplPSIyMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9IjAuMzVlbSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0id2hpdGUiPkxTPC90ZXh0Pjwvc3ZnPg==" alt="Logo" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold">Presensi Kurban LAZIS Sabililah</h1>
+                        <p id="current-date" class="text-white opacity-90"></p>
+                    </div>
+                </div>
+                <div class="flex space-x-2">
+                    <button id="btn-sync-sheet" class="bg-white text-green-700 px-4 py-2 rounded-lg flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
+                        </svg>
+                        Sync dengan Google Sheet
+                    </button>
+                    <button id="btn-settings" class="bg-white text-green-700 px-4 py-2 rounded-lg flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
+                        </svg>
+                        Pengaturan
+                    </button>
+                    <button id="btn-logout" class="bg-white text-red-600 px-4 py-2 rounded-lg flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 001 1h12a1 1 0 001-1V4a1 1 0 00-1-1H3zm11 4a1 1 0 10-2 0v4.586l-1.293-1.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L14 11.586V7z" clip-rule="evenodd" />
+                        </svg>
+                        Keluar
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex mb-6 border-b border-gray-200">
+                <button id="tab-presensi" class="tab-button active">Presensi</button>
+                <button id="tab-database" class="tab-button">Database Panitia</button>
+                <button id="tab-riwayat" class="tab-button">Riwayat Presensi</button>
+            </div>
+
+            <!-- Presensi Tab -->
+            <div id="presensi-content">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                    <div class="card">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-green-100 text-green-600 mr-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-gray-500 text-sm">Total Panitia</p>
+                                <h3 id="total-panitia" class="text-2xl font-bold">0</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-green-100 text-green-600 mr-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-gray-500 text-sm">Hadir Hari Ini</p>
+                                <h3 id="total-hadir" class="text-2xl font-bold">0</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-yellow-100 text-yellow-600 mr-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-gray-500 text-sm">Terlambat</p>
+                                <h3 id="total-terlambat" class="text-2xl font-bold">0</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-blue-100 text-blue-600 mr-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-gray-500 text-sm">Sudah Pulang</p>
+                                <h3 id="total-pulang" class="text-2xl font-bold">0</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2 class="text-xl font-semibold mb-4">Scan Barcode Presensi</h2>
+                    <div class="time-setting mb-4">
+                        <div class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-green-600" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
+                            </svg>
+                            <span class="mr-2 font-medium">Jam Masuk:</span>
+                            <input type="time" id="jam-masuk-input" class="border border-gray-300 rounded px-2 py-1" value="08:00">
+                            <button id="save-jam-masuk" class="ml-2 bg-green-600 text-white px-3 py-1 rounded text-sm">Simpan</button>
+                        </div>
+                        <div class="ml-auto text-sm text-gray-500">
+                            <span>Jam masuk saat ini: </span>
+                            <span id="current-jam-masuk" class="font-medium">08:00</span>
+                        </div>
+                    </div>
+                    <div class="barcode-scanner mb-4">
+                        <div class="flex items-center mb-4">
+                            <div class="mr-6">
+                                <label class="inline-flex items-center">
+                                    <input type="radio" name="scan-type" value="masuk" class="form-radio h-5 w-5 text-green-600" checked>
+                                    <span class="ml-2 text-gray-700">Presensi Masuk</span>
+                                </label>
+                            </div>
+                            <div>
+                                <label class="inline-flex items-center">
+                                    <input type="radio" name="scan-type" value="keluar" class="form-radio h-5 w-5 text-green-600">
+                                    <span class="ml-2 text-gray-700">Presensi Keluar</span>
+                                </label>
+                            </div>
+                        </div>
+                        <input type="text" id="barcode-input" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Scan barcode NIK di sini..." autofocus>
+                    </div>
+                    <div class="bg-blue-50 p-4 rounded-lg text-blue-700 text-sm mb-4">
+                        <p class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                            </svg>
+                            Scan barcode NIK untuk melakukan presensi. Pastikan pilihan presensi masuk/keluar sudah sesuai.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-semibold">Riwayat Presensi Hari Ini</h2>
+                        <div class="relative">
+                            <input type="text" id="search-presensi" class="search-input" placeholder="Cari...">
+                            <div class="search-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full">
+                            <thead>
+                                <tr class="bg-gray-50">
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">NIK</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jobdesk</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jam Masuk</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jam Keluar</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hak</th>
+                                </tr>
+                            </thead>
+                            <tbody id="presensi-table-body" class="bg-white divide-y divide-gray-200">
+                                <!-- Data will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Database Tab -->
+            <div id="database-content" class="hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-semibold">Database Panitia</h2>
+                    <div class="flex space-x-2">
+                        <div class="relative">
+                            <input type="text" id="search-database" class="search-input" placeholder="Cari...">
+                            <div class="search-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                        </div>
+                        <button id="btn-tambah-panitia" class="btn-primary flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                            </svg>
+                            Tambah Panitia
+                        </button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full">
+                            <thead>
+                                <tr class="bg-gray-50">
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">NIK</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jobdesk</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jabatan</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Alamat</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">WhatsApp</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hak</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="database-table-body" class="bg-white divide-y divide-gray-200">
+                                <!-- Data will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Riwayat Tab -->
+            <div id="riwayat-content" class="hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-semibold">Riwayat Presensi</h2>
+                    <div class="flex space-x-2">
+                        <div class="relative">
+                            <input type="text" id="search-riwayat" class="search-input" placeholder="Cari...">
+                            <div class="search-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <label for="filter-date" class="mr-2 text-gray-700">Tanggal:</label>
+                            <input type="date" id="filter-date" class="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full">
+                            <thead>
+                                <tr class="bg-gray-50">
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">NIK</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jobdesk</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jam Masuk</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jam Keluar</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Keterangan</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hak</th>
+                                </tr>
+                            </thead>
+                            <tbody id="riwayat-table-body" class="bg-white divide-y divide-gray-200">
+                                <!-- Data will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal for adding/editing panitia -->
+        <div id="panitia-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+            <div class="bg-white rounded-lg w-full max-w-2xl p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 id="modal-title" class="text-xl font-semibold">Tambah Panitia</h3>
+                    <button id="close-modal" class="text-gray-500 hover:text-gray-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <form id="panitia-form">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        <div>
+                            <label for="nik-input" class="block text-gray-700 font-medium mb-2">NIK</label>
+                            <input type="text" id="nik-input" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" required>
+                        </div>
+                        <div>
+                            <label for="nama-input" class="block text-gray-700 font-medium mb-2">Nama</label>
+                            <input type="text" id="nama-input" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" required>
+                        </div>
+                        <div>
+                            <label for="jobdesk-input" class="block text-gray-700 font-medium mb-2">Jobdesk</label>
+                            <input type="text" id="jobdesk-input" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" required>
+                        </div>
+                        <div>
+                            <label for="jabatan-input" class="block text-gray-700 font-medium mb-2">Jabatan</label>
+                            <input type="text" id="jabatan-input" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" required>
+                        </div>
+                        <div>
+                            <label for="alamat-input" class="block text-gray-700 font-medium mb-2">Alamat</label>
+                            <input type="text" id="alamat-input" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+                        </div>
+                        <div>
+                            <label for="whatsapp-input" class="block text-gray-700 font-medium mb-2">WhatsApp</label>
+                            <input type="text" id="whatsapp-input" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+                        </div>
+                        <div>
+                            <label for="hak-input" class="block text-gray-700 font-medium mb-2">Hak</label>
+                            <input type="text" id="hak-input" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Contoh: Daging 2 Bungkus">
+                        </div>
+                    </div>
+                    <div class="flex justify-end space-x-2">
+                        <button type="button" id="cancel-panitia" class="btn-secondary">Batal</button>
+                        <button type="submit" id="save-panitia" class="btn-primary">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Settings Modal -->
+        <div id="settings-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+            <div class="bg-white rounded-lg w-full max-w-md p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-xl font-semibold">Pengaturan Aplikasi</h3>
+                    <button id="close-settings" class="text-gray-500 hover:text-gray-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <form id="settings-form">
+                    <div class="mb-4">
+                        <label for="settings-jam-masuk" class="block text-gray-700 font-medium mb-2">Jam Masuk Default</label>
+                        <input type="time" id="settings-jam-masuk" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" required>
+                        <p class="text-sm text-gray-500 mt-1">Jam masuk digunakan untuk menentukan status keterlambatan</p>
+                    </div>
+                    <div class="flex justify-end space-x-2">
+                        <button type="button" id="cancel-settings" class="btn-secondary">Batal</button>
+                        <button type="submit" id="save-settings" class="btn-primary">Simpan Pengaturan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Confirmation Modal -->
+        <div id="confirm-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+            <div class="bg-white rounded-lg w-full max-w-md p-6">
+                <h3 class="text-xl font-semibold mb-4">Konfirmasi</h3>
+                <p id="confirm-message" class="mb-6 text-gray-700">Apakah Anda yakin ingin melakukan tindakan ini?</p>
+                <div class="flex justify-end space-x-2">
+                    <button id="cancel-confirm" class="btn-secondary">Batal</button>
+                    <button id="confirm-action" class="btn-danger">Ya, Lanjutkan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Google Sheet Configuration
+        const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/1-4dbmZZIN0zsqYJcFfy9e2BlYyIaiGX_-y4lQrnPiy4/edit?gid=0#gid=0';
+        
+        // Google Apps Script Web App URL
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/a/macros/sabilillahmalang.org/s/AKfycbznKQBany9-VyvxIsZOlwh0YMi657Ih2GrFjL6ADpK0y4Re8G25dzvj-fNZhkkjFXbT/exec';
+        
+        // Initialize data storage
+        let database = [];
+        let riwayatPresensi = [];
+        let jamMasuk = '08:00'; // Default jam masuk
+        let appSettings = {
+            jamMasuk: '08:00'
+        };
+
+        // DOM Elements
+        const loginScreen = document.getElementById('login-screen');
+        const mainApp = document.getElementById('main-app');
+        const loginForm = document.getElementById('login-form');
+        const passwordInput = document.getElementById('password');
+        const passwordError = document.getElementById('password-error');
+        const btnLogout = document.getElementById('btn-logout');
+        
+        const tabPresensi = document.getElementById('tab-presensi');
+        const tabDatabase = document.getElementById('tab-database');
+        const tabRiwayat = document.getElementById('tab-riwayat');
+        
+        const presensiContent = document.getElementById('presensi-content');
+        const databaseContent = document.getElementById('database-content');
+        const riwayatContent = document.getElementById('riwayat-content');
+        
+        const barcodeInput = document.getElementById('barcode-input');
+        const searchPresensi = document.getElementById('search-presensi');
+        const searchDatabase = document.getElementById('search-database');
+        const searchRiwayat = document.getElementById('search-riwayat');
+        const filterDate = document.getElementById('filter-date');
+        
+        const btnSyncSheet = document.getElementById('btn-sync-sheet');
+        const btnTambahPanitia = document.getElementById('btn-tambah-panitia');
+        const btnSettings = document.getElementById('btn-settings');
+        
+        const presensiTableBody = document.getElementById('presensi-table-body');
+        const databaseTableBody = document.getElementById('database-table-body');
+        const riwayatTableBody = document.getElementById('riwayat-table-body');
+        
+        const panitiaModal = document.getElementById('panitia-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const closeModal = document.getElementById('close-modal');
+        const panitiaForm = document.getElementById('panitia-form');
+        const nikInput = document.getElementById('nik-input');
+        const namaInput = document.getElementById('nama-input');
+        const jobdeskInput = document.getElementById('jobdesk-input');
+        const jabatanInput = document.getElementById('jabatan-input');
+        const alamatInput = document.getElementById('alamat-input');
+        const whatsappInput = document.getElementById('whatsapp-input');
+        const hakInput = document.getElementById('hak-input');
+        const cancelPanitia = document.getElementById('cancel-panitia');
+        
+        const settingsModal = document.getElementById('settings-modal');
+        const closeSettings = document.getElementById('close-settings');
+        const settingsForm = document.getElementById('settings-form');
+        const settingsJamMasuk = document.getElementById('settings-jam-masuk');
+        const cancelSettings = document.getElementById('cancel-settings');
+        
+        const jamMasukInput = document.getElementById('jam-masuk-input');
+        const saveJamMasuk = document.getElementById('save-jam-masuk');
+        const currentJamMasuk = document.getElementById('current-jam-masuk');
+        
+        const confirmModal = document.getElementById('confirm-modal');
+        const confirmMessage = document.getElementById('confirm-message');
+        const cancelConfirm = document.getElementById('cancel-confirm');
+        const confirmAction = document.getElementById('confirm-action');
+        
+        const notification = document.getElementById('notification');
+        const notificationMessage = document.getElementById('notification-message');
+        const loadingOverlay = document.getElementById('loading-overlay');
+
+        // Flag to control barcode input focus
+        let shouldFocusBarcode = true;
+        let currentConfirmAction = null;
+        let editingNik = null;
+        
+        // Password for app access
+        const APP_PASSWORD = 'bismillahlazis';
+
+        // Check if user is already logged in
+        function checkLoginStatus() {
+            const isLoggedIn = localStorage.getItem('presensiLoggedIn');
+            if (isLoggedIn === 'true') {
+                showMainApp();
+            } else {
+                showLoginScreen();
+            }
+        }
+
+        // Show login screen
+        function showLoginScreen() {
+            loginScreen.classList.remove('hidden');
+            mainApp.classList.add('hidden');
+            passwordInput.value = '';
+            passwordError.classList.add('hidden');
+        }
+
+        // Show main app
+        function showMainApp() {
+            loginScreen.classList.add('hidden');
+            mainApp.classList.remove('hidden');
+            localStorage.setItem('presensiLoggedIn', 'true');
+            
+            // Initialize app
+            updateDateTime();
+            setInterval(updateDateTime, 1000);
+            
+            // Set today's date as default for filter
+            const today = new Date().toISOString().split('T')[0];
+            filterDate.value = today;
+            
+            // Load settings from localStorage
+            loadSettings();
+            
+            // Load data from Google Sheet
+            loadDataFromGoogleSheet();
+            
+            // Focus on barcode input
+            if (shouldFocusBarcode) {
+                barcodeInput.focus();
+            }
+        }
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', () => {
+            checkLoginStatus();
+            
+            // Add event listeners
+            loginForm.addEventListener('submit', handleLogin);
+            btnLogout.addEventListener('click', handleLogout);
+            
+            tabPresensi.addEventListener('click', () => switchTab('presensi'));
+            tabDatabase.addEventListener('click', () => switchTab('database'));
+            tabRiwayat.addEventListener('click', () => switchTab('riwayat'));
+            
+            searchPresensi.addEventListener('input', renderPresensiTable);
+            searchDatabase.addEventListener('input', renderDatabaseTable);
+            searchRiwayat.addEventListener('input', renderRiwayatTable);
+            filterDate.addEventListener('change', renderRiwayatTable);
+            
+            btnSyncSheet.addEventListener('click', loadDataFromGoogleSheet);
+            btnSettings.addEventListener('click', openSettingsModal);
+            btnTambahPanitia.addEventListener('click', openAddPanitiaModal);
+            
+            saveJamMasuk.addEventListener('click', saveJamMasukSetting);
+            
+            barcodeInput.addEventListener('keypress', handleBarcodeScan);
+            
+            panitiaForm.addEventListener('submit', savePanitia);
+            closeModal.addEventListener('click', closeModalHandler);
+            cancelPanitia.addEventListener('click', closeModalHandler);
+            
+            settingsForm.addEventListener('submit', saveSettingsHandler);
+            closeSettings.addEventListener('click', closeSettingsModal);
+            cancelSettings.addEventListener('click', closeSettingsModal);
+            
+            cancelConfirm.addEventListener('click', closeConfirmModal);
+            confirmAction.addEventListener('click', executeConfirmAction);
+        });
+
+        // Handle login form submission
+        function handleLogin(e) {
+            e.preventDefault();
+            const password = passwordInput.value.trim();
+            
+            if (password === APP_PASSWORD) {
+                showMainApp();
+            } else {
+                passwordError.classList.remove('hidden');
+            }
+        }
+
+        // Handle logout
+        function handleLogout() {
+            localStorage.removeItem('presensiLoggedIn');
+            showLoginScreen();
+        }
+
+        // Switch between tabs
+        function switchTab(tab) {
+            tabPresensi.classList.toggle('active', tab === 'presensi');
+            tabDatabase.classList.toggle('active', tab === 'database');
+            tabRiwayat.classList.toggle('active', tab === 'riwayat');
+            
+            presensiContent.classList.toggle('hidden', tab !== 'presensi');
+            databaseContent.classList.toggle('hidden', tab !== 'database');
+            riwayatContent.classList.toggle('hidden', tab !== 'riwayat');
+            
+            shouldFocusBarcode = (tab === 'presensi');
+            if (shouldFocusBarcode) {
+                barcodeInput.focus();
+            }
+        }
+
+        // Load settings from localStorage
+        function loadSettings() {
+            const savedSettings = localStorage.getItem('presensiSettings');
+            if (savedSettings) {
+                appSettings = JSON.parse(savedSettings);
+                jamMasuk = appSettings.jamMasuk;
+            }
+            
+            // Update UI
+            jamMasukInput.value = jamMasuk;
+            currentJamMasuk.textContent = jamMasuk;
+            settingsJamMasuk.value = jamMasuk;
+        }
+
+        // Save settings to localStorage
+        function saveSettings() {
+            localStorage.setItem('presensiSettings', JSON.stringify(appSettings));
+        }
+
+        // Update date and time
+        function updateDateTime() {
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const dateStr = now.toLocaleDateString('id-ID', options);
+            const timeStr = now.toLocaleTimeString('id-ID');
+            document.getElementById('current-date').textContent = `${dateStr}, ${timeStr} WIB`;
+        }
+
+        // Show notification
+        function showNotification(message, isError = false) {
+            notificationMessage.textContent = message;
+            notification.classList.add('show');
+            if (isError) {
+                notification.classList.add('error');
+            } else {
+                notification.classList.remove('error');
+            }
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Show confirmation modal
+        function showConfirmation(message, callback) {
+            confirmMessage.textContent = message;
+            confirmModal.classList.remove('hidden');
+            currentConfirmAction = callback;
+        }
+
+        // Close confirmation modal
+        function closeConfirmModal() {
+            confirmModal.classList.add('hidden');
+            currentConfirmAction = null;
+        }
+
+        // Execute confirmed action
+        function executeConfirmAction() {
+            if (currentConfirmAction) {
+                currentConfirmAction();
+            }
+            closeConfirmModal();
+        }
+
+        // Show/hide loading overlay
+        function showLoading() {
+            loadingOverlay.classList.remove('hidden');
+        }
+        
+        function hideLoading() {
+            loadingOverlay.classList.add('hidden');
+        }
+
+        // Load data from Google Sheet
+        function loadDataFromGoogleSheet() {
+            showLoading();
+            
+            // For demo purposes, we'll use sample data instead of actual API call
+            setTimeout(() => {
+                useSampleData();
+                hideLoading();
+                showNotification('Data berhasil dimuat');
+            }, 1000);
+        }
+        
+        // Use sample data
+        function useSampleData() {
+            database = [
+                { nik: '1001', nama: 'Ahmad Fauzi', jobdesk: 'Penyembelihan', jabatan: 'Koordinator', alamat: 'Jl. Merdeka No. 10', whatsapp: '081234567890', hak: 'Daging 2 Bungkus' },
+                { nik: '1002', nama: 'Siti Aminah', jobdesk: 'Administrasi', jabatan: 'Sekretaris', alamat: 'Jl. Pahlawan No. 15', whatsapp: '081234567891', hak: 'Daging 1 Bungkus' },
+                { nik: '1003', nama: 'Budi Santoso', jobdesk: 'Keuangan', jabatan: 'Bendahara', alamat: 'Jl. Sudirman No. 20', whatsapp: '081234567892', hak: 'Daging 1 Bungkus' }
+            ];
+            
+            const today = new Date().toISOString().split('T')[0];
+            riwayatPresensi = [
+                { tanggal: today, nik: '1001', nama: 'Ahmad Fauzi', jobdesk: 'Penyembelihan', jabatan: 'Koordinator', jamMasuk: '07:45', jamKeluar: '14:00', status: 'Hadir', keterangan: '', hak: 'Daging 2 Bungkus' },
+                { tanggal: today, nik: '1002', nama: 'Siti Aminah', jobdesk: 'Administrasi', jabatan: 'Sekretaris', jamMasuk: '08:10', jamKeluar: '', status: 'Terlambat', keterangan: 'Terlambat 10 menit', hak: '' }
+            ];
+            
+            // Update UI
+            updateDashboardStats();
+            renderPresensiTable();
+            renderDatabaseTable();
+            renderRiwayatTable();
+        }
+
+        // Sync data to Google Sheet (mock function)
+        function syncDataToGoogleSheet() {
+            showLoading();
+            
+            setTimeout(() => {
+                hideLoading();
+                showNotification('Data berhasil disinkronkan');
+            }, 1000);
+        }
+
+        // Update dashboard statistics
+        function updateDashboardStats() {
+            const totalPanitia = database.length;
+            document.getElementById('total-panitia').textContent = totalPanitia;
+            
+            const today = new Date().toISOString().split('T')[0];
+            const todayRiwayat = riwayatPresensi.filter(r => r.tanggal === today);
+            
+            const totalHadir = todayRiwayat.length;
+            document.getElementById('total-hadir').textContent = totalHadir;
+            
+            const totalTerlambat = todayRiwayat.filter(r => r.status === 'Terlambat').length;
+            document.getElementById('total-terlambat').textContent = totalTerlambat;
+            
+            const totalPulang = todayRiwayat.filter(r => r.jamKeluar).length;
+            document.getElementById('total-pulang').textContent = totalPulang;
+        }
+
+        // Render presensi table (today only)
+        function renderPresensiTable() {
+            const today = new Date().toISOString().split('T')[0];
+            let todayRiwayat = riwayatPresensi.filter(r => r.tanggal === today);
+            
+            let html = '';
+            if (todayRiwayat.length === 0) {
+                html = '<tr><td colspan="7" class="px-6 py-4 text-center text-gray-500">Belum ada data presensi hari ini</td></tr>';
+            } else {
+                const searchTerm = searchPresensi.value.toLowerCase();
+                let filteredRiwayat = searchTerm ? 
+                    todayRiwayat.filter(r => 
+                        r.nik.toLowerCase().includes(searchTerm) || 
+                        r.nama.toLowerCase().includes(searchTerm) || 
+                        r.jobdesk.toLowerCase().includes(searchTerm)
+                    ) : todayRiwayat;
+                
+                // Sort by most recent first (reverse order)
+                filteredRiwayat = [...filteredRiwayat].reverse();
+                
+                filteredRiwayat.forEach(r => {
+                    // Only show hak if jamKeluar exists
+                    const hakDisplay = r.jamKeluar ? (r.hak || '-') : '-';
+                    
+                    html += `
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">${r.nik}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">${r.nama}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">${r.jobdesk}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">${r.jamMasuk}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="status-${r.status.toLowerCase()}">${r.status}</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">${r.jamKeluar || '-'}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">${hakDisplay}</td>
+                        </tr>
+                    `;
+                });
+            }
+            
+            presensiTableBody.innerHTML = html;
+        }
+
+        // Render database table
+        function renderDatabaseTable() {
+            let html = '';
+            if (database.length === 0) {
+                html = '<tr><td colspan="8" class="px-6 py-4 text-center text-gray-500">Belum ada data panitia</td></tr>';
+            } else {
+                const searchTerm = searchDatabase.value.toLowerCase();
+                const filteredDatabase = searchTerm ? 
+                    database.filter(p => 
+                        p.nik.toLowerCase().includes(searchTerm) || 
+                        p.nama.toLowerCase().includes(searchTerm) || 
+                        p.jobdesk.toLowerCase().includes(searchTerm) ||
+                        p.jabatan.toLowerCase().includes(searchTerm)
+                    ) : database;
+                
+                filteredDatabase.forEach(p => {
+                    html += `
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">${p.nik}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">${p.nama}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">${p.jobdesk}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">${p.jabatan}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">${p.alamat || '-'}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">${p.whatsapp || '-'}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">${p.hak || '-'}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex space-x-2">
+                                    <button class="text-blue-600 hover:text-blue-800" onclick="editPanitia('${p.nik}')">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                            <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                                        </svg>
+                                    </button>
+                                    <button class="text-red-600 hover:text-red-800" onclick="deletePanitia('${p.nik}')">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+            
+            databaseTableBody.innerHTML = html;
+        }
+
+        // Render riwayat table
+        function renderRiwayatTable() {
+            let html = '';
+            if (riwayatPresensi.length === 0) {
+                html = '<tr><td colspan="9" class="px-6 py-4 text-center text-gray-500">Belum ada data riwayat presensi</td></tr>';
+            } else {
+                const searchTerm = searchRiwayat.value.toLowerCase();
+                const selectedDate = filterDate.value;
+                
+                let filteredRiwayat = riwayatPresensi;
+                
+                if (selectedDate) {
+                    filteredRiwayat = filteredRiwayat.filter(r => r.tanggal === selectedDate);
+                }
+                
+                if (searchTerm) {
+                    filteredRiwayat = filteredRiwayat.filter(r => 
+                        r.nik.toLowerCase().includes(searchTerm) || 
+                        r.nama.toLowerCase().includes(searchTerm) || 
+                        r.jobdesk.toLowerCase().includes(searchTerm)
+                    );
+                }
+                
+                // Sort by most recent first (reverse order)
+                filteredRiwayat = [...filteredRiwayat].reverse();
+                
+                if (filteredRiwayat.length === 0) {
+                    html = '<tr><td colspan="9" class="px-6 py-4 text-center text-gray-500">Tidak ada data yang sesuai dengan filter</td></tr>';
+                } else {
+                    filteredRiwayat.forEach(r => {
+                        const date = new Date(r.tanggal);
+                        const formattedDate = date.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+                        
+                        // Only show hak if jamKeluar exists
+                        const hakDisplay = r.jamKeluar ? (r.hak || '-') : '-';
+                        
+                        html += `
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">${formattedDate}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">${r.nik}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">${r.nama}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">${r.jobdesk}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">${r.jamMasuk}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="status-${r.status.toLowerCase()}">${r.status}</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">${r.jamKeluar || '-'}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">${r.keterangan || '-'}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">${hakDisplay}</td>
+                            </tr>
+                        `;
+                    });
+                }
+            }
+            
+            riwayatTableBody.innerHTML = html;
+        }
+
+        // Handle barcode scan
+        function handleBarcodeScan(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const nik = this.value.trim();
+                if (!nik) return;
+                
+                const panitia = database.find(p => p.nik === nik);
+                if (!panitia) {
+                    showNotification('NIK tidak ditemukan dalam database!', true);
+                    this.value = '';
+                    this.focus();
+                    return;
+                }
+                
+                const scanType = document.querySelector('input[name="scan-type"]:checked').value;
+                const today = new Date().toISOString().split('T')[0];
+                const now = new Date();
+                const currentTime = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+                
+                if (scanType === 'masuk') {
+                    // Check if already present today
+                    const alreadyPresent = riwayatPresensi.find(r => r.tanggal === today && r.nik === nik);
+                    if (alreadyPresent) {
+                        showNotification(`${panitia.nama} sudah melakukan presensi masuk hari ini!`, true);
+                        this.value = '';
+                        this.focus();
+                        return;
+                    }
+                    
+                    // Check if late
+                    const [jamMasukHour, jamMasukMinute] = jamMasuk.split(':').map(Number);
+                    const [currentHour, currentMinute] = currentTime.split(':').map(Number);
+                    
+                    const isLate = currentHour > jamMasukHour || (currentHour === jamMasukHour && currentMinute > jamMasukMinute);
+                    const status = isLate ? 'Terlambat' : 'Hadir';
+                    
+                    let keterangan = '';
+                    if (isLate) {
+                        const hourDiff = currentHour - jamMasukHour;
+                        const minuteDiff = currentMinute - jamMasukMinute;
+                        
+                        if (hourDiff > 0) {
+                            keterangan = `Terlambat ${hourDiff} jam`;
+                            if (minuteDiff > 0) {
+                                keterangan += ` ${minuteDiff} menit`;
+                            }
+                        } else {
+                            keterangan = `Terlambat ${minuteDiff} menit`;
+                        }
+                    }
+                    
+                    const newPresensi = {
+                        tanggal: today,
+                        nik: panitia.nik,
+                        nama: panitia.nama,
+                        jobdesk: panitia.jobdesk,
+                        jabatan: panitia.jabatan,
+                        jamMasuk: currentTime,
+                        jamKeluar: '',
+                        status: status,
+                        keterangan: keterangan,
+                        hak: '' // Hak is empty when checking in
+                    };
+                    
+                    riwayatPresensi.push(newPresensi);
+                    
+                    showNotification(`${panitia.nama} berhasil melakukan presensi masuk!`);
+                } else {
+                    // Check if already present today
+                    const todayPresence = riwayatPresensi.find(r => r.tanggal === today && r.nik === nik);
+                    if (!todayPresence) {
+                        showNotification(`${panitia.nama} belum melakukan presensi masuk hari ini!`, true);
+                        this.value = '';
+                        this.focus();
+                        return;
+                    }
+                    
+                    if (todayPresence.jamKeluar) {
+                        showNotification(`${panitia.nama} sudah melakukan presensi keluar hari ini!`, true);
+                        this.value = '';
+                        this.focus();
+                        return;
+                    }
+                    
+                    // Update presensi with exit time and hak
+                    todayPresence.jamKeluar = currentTime;
+                    todayPresence.hak = panitia.hak || ''; // Set hak when checking out
+                    
+                    showNotification(`${panitia.nama} berhasil melakukan presensi keluar!`);
+                }
+                
+                // Update UI
+                updateDashboardStats();
+                renderPresensiTable();
+                renderRiwayatTable();
+                
+                // Sync to Google Sheet
+                syncDataToGoogleSheet();
+                
+                this.value = '';
+                this.focus();
+            }
+        }
+
+        // Open settings modal
+        function openSettingsModal() {
+            settingsJamMasuk.value = jamMasuk;
+            settingsModal.classList.remove('hidden');
+        }
+
+        // Close settings modal
+        function closeSettingsModal() {
+            settingsModal.classList.add('hidden');
+        }
+
+        // Save settings
+        function saveSettingsHandler(e) {
+            e.preventDefault();
+            
+            const newJamMasuk = settingsJamMasuk.value;
+            if (!newJamMasuk) return;
+            
+            jamMasuk = newJamMasuk;
+            appSettings.jamMasuk = newJamMasuk;
+            saveSettings();
+            
+            jamMasukInput.value = newJamMasuk;
+            currentJamMasuk.textContent = newJamMasuk;
+            
+            settingsModal.classList.add('hidden');
+            showNotification('Pengaturan berhasil disimpan');
+        }
+
+        // Save jam masuk from quick setting
+        function saveJamMasukSetting() {
+            const newJamMasuk = jamMasukInput.value;
+            if (!newJamMasuk) return;
+            
+            jamMasuk = newJamMasuk;
+            appSettings.jamMasuk = newJamMasuk;
+            saveSettings();
+            
+            currentJamMasuk.textContent = newJamMasuk;
+            showNotification(`Jam masuk berhasil diubah menjadi ${newJamMasuk}`);
+        }
+
+        // Open add panitia modal
+        function openAddPanitiaModal() {
+            modalTitle.textContent = 'Tambah Panitia';
+            nikInput.value = '';
+            namaInput.value = '';
+            jobdeskInput.value = '';
+            jabatanInput.value = '';
+            alamatInput.value = '';
+            whatsappInput.value = '';
+            hakInput.value = '';
+            nikInput.disabled = false;
+            editingNik = null;
+            panitiaModal.classList.remove('hidden');
+        }
+
+        // Close modal handler
+        function closeModalHandler() {
+            panitiaModal.classList.add('hidden');
+        }
+
+        // Save panitia
+        function savePanitia(e) {
+            e.preventDefault();
+            
+            const nik = nikInput.value.trim();
+            const nama = namaInput.value.trim();
+            const jobdesk = jobdeskInput.value.trim();
+            const jabatan = jabatanInput.value.trim();
+            const alamat = alamatInput.value.trim();
+            const whatsapp = whatsappInput.value.trim();
+            const hak = hakInput.value.trim();
+            
+            if (!nik || !nama || !jobdesk || !jabatan) {
+                showNotification('Mohon lengkapi data wajib (NIK, Nama, Jobdesk, Jabatan)', true);
+                return;
+            }
+            
+            if (editingNik) {
+                // Update existing panitia
+                const index = database.findIndex(p => p.nik === editingNik);
+                if (index !== -1) {
+                    database[index] = {
+                        nik: editingNik,
+                        nama,
+                        jobdesk,
+                        jabatan,
+                        alamat,
+                        whatsapp,
+                        hak
+                    };
+                    
+                    // Update riwayat presensi for this panitia
+                    riwayatPresensi.forEach(r => {
+                        if (r.nik === editingNik) {
+                            r.nama = nama;
+                            r.jobdesk = jobdesk;
+                            r.jabatan = jabatan;
+                            // Only update hak for records with jamKeluar
+                            if (r.jamKeluar) {
+                                r.hak = hak;
+                            }
+                        }
+                    });
+                    
+                    showNotification(`Data panitia ${nama} berhasil diperbarui`);
+                }
+            } else {
+                // Check if NIK already exists
+                if (database.some(p => p.nik === nik)) {
+                    showNotification(`NIK ${nik} sudah terdaftar!`, true);
+                    return;
+                }
+                
+                // Add new panitia
+                database.push({
+                    nik,
+                    nama,
+                    jobdesk,
+                    jabatan,
+                    alamat,
+                    whatsapp,
+                    hak
+                });
+                
+                showNotification(`Panitia ${nama} berhasil ditambahkan`);
+            }
+            
+            // Update UI
+            updateDashboardStats();
+            renderDatabaseTable();
+            
+            // Sync to Google Sheet
+            syncDataToGoogleSheet();
+            
+            // Close modal
+            panitiaModal.classList.add('hidden');
+        }
+
+        // Edit panitia
+        window.editPanitia = function(nik) {
+            const panitia = database.find(p => p.nik === nik);
+            if (!panitia) return;
+            
+            modalTitle.textContent = 'Edit Panitia';
+            nikInput.value = panitia.nik;
+            namaInput.value = panitia.nama;
+            jobdeskInput.value = panitia.jobdesk;
+            jabatanInput.value = panitia.jabatan;
+            alamatInput.value = panitia.alamat || '';
+            whatsappInput.value = panitia.whatsapp || '';
+            hakInput.value = panitia.hak || '';
+            nikInput.disabled = true;
+            editingNik = nik;
+            
+            panitiaModal.classList.remove('hidden');
+        };
+
+        // Delete panitia<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'944874dcd4fb5fb7',t:'MTc0ODA0NDIzNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
